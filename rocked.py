@@ -14,6 +14,7 @@ parser.add_argument('--kill', help='kill container', action='store_true')
 parser.add_argument('--logs', help='display container logs', action='store_true')
 parser.add_argument('--run', help='run a one-off command', nargs='+')
 parser.add_argument('--start', help='start container', action='store_true')
+parser.add_argument('--status', help='show container status', action='store_true')
 parser.add_argument('--stop', help='stop container', action='store_true')
 args = parser.parse_args()
 
@@ -28,8 +29,15 @@ if args.build:
     subprocess.call(['docker', 'build', '-t', manifest['image'], manifest['build']])
     exit(0)
 
+ps_command = ['docker', 'ps']
+show_status = False
+if args.status or not any([args.build, args.kill, args.logs, args.run, args.start, args.stop]):
+    show_status = True
+else:
+    ps_command.extend(['-a'])
+
 container = None
-container_list = subprocess.check_output(['docker', 'ps', '-a']).strip().split('\n')
+container_list = subprocess.check_output(ps_command).strip().split('\n')
 if len(container_list) > 1:
     for line in [c.split() for c in container_list[1:]]:
         container_id = line[0]
@@ -37,6 +45,12 @@ if len(container_list) > 1:
         if inspect['Name'] == u'/{name}'.format(name=manifest['name']):
             container = container_id
             break
+
+if show_status:
+    if container:
+        print manifest['name'] + ': running'
+    else:
+        print manifest['name'] + ': not running'
 
 if container:
     if args.kill:
