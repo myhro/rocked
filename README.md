@@ -49,10 +49,73 @@ The manifest file is written in YAML format. This is the list of supported and r
 | ports       | list   | List of ports to be published                         | no       |
 | volumes     | list   | List of volumes to be mounted                         | no       |
 
+## Examples
 
+### Database container
+
+Create a container based on the `postgres` image (tag `9.3`), named `db_postgres` and mount a persistent volume to store [PostgresSQL][postgresql]'s data:
+
+```yaml
+image: "postgres:9.3"
+name: "db_postgres"
+volumes:
+    - "/var/lib/postgresql/docker:/var/lib/postgresql/data"
+```
+
+Start the container daemon:
+
+    [myhro@wheezy:~]$ rocked start db.yml
+
+### Web application container
+
+Based on this Dockerfile...
+
+```
+RUN apt-get update
+RUN apt-get install -y build-essential libpq-dev python-dev python-pip
+ADD . /app
+WORKDIR /app
+RUN pip install -r requirements.txt
+```
+
+... and this manifest ...
+
+```yaml
+image: "python-baseimage"
+build: "."
+command: "gunicorn -b 0.0.0.0:8000 django_app.wsgi"
+environment:
+    - "DATABASE_NAME=django_app"
+    - "DJANGO_SECRET_KEY"
+name: "web_djangoapp"
+links:
+    - "db_postgres:db"
+ports:
+    - "${GUNICORN_PORT}:8000"
+volumes:
+    - "${PROJECT_ROOT}:/app"
+```
+
+... build an image prepared to run a [Django][django] web application, then serve it using [Gunicorn][gunicorn]:
+
+    [myhro@wheezy:~]$ rocked build web.yml
+    Step 0 : FROM ubuntu:trusty
+     ---> e54ca5efa2e9
+    (...)
+    Step 5 : RUN pip install -r requirements.txt
+     ---> 6c13fc4515aa
+    Successfully built 8d2d8f4be123
+    [myhro@wheezy:~]$ rocked start web.yml
+
+**Note**: environment variables, like `${GUNICORN_PORT}` and `${PROJECT_ROOT}` will be parsed when reading the manifest.
+
+
+[django]: https://www.djangoproject.com/
 [docker]: http://www.docker.com/
 [docopt]: https://pypi.python.org/pypi/docopt
+[gunicorn]: http://gunicorn.org/
 [pip]: http://pip.readthedocs.org/en/latest/
+[postgresql]: http://www.postgresql.org/
 [pypi]: https://pypi.python.org/
 [pyyaml]: https://pypi.python.org/pypi/PyYAML
 [yaml]: https://en.wikipedia.org/wiki/YAML
