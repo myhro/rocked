@@ -109,11 +109,16 @@ volumes:
 
 **Note**: environment variables, like `${GUNICORN_PORT}` and `${PROJECT_ROOT}` will be parsed when reading the manifest.
 
+## License
+
+[MIT License][license]
+
 
 [django]: https://www.djangoproject.com/
 [docker]: http://www.docker.com/
 [docopt]: https://pypi.python.org/pypi/docopt
 [gunicorn]: http://gunicorn.org/
+[license]: https://github.com/myhro/rocked/blob/master/LICENSE
 [pip]: http://pip.readthedocs.org/en/latest/
 [postgresql]: http://www.postgresql.org/
 [pypi]: https://pypi.python.org/
