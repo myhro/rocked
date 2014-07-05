@@ -3,35 +3,42 @@
 import json
 import os
 import subprocess
-import argparse
+import docopt
 import yaml
 
 
-parser = argparse.ArgumentParser()
-parser.add_argument('file', help='YAML manifest file to be loaded')
-parser.add_argument('--build', help='build image', action='store_true')
-parser.add_argument('--kill', help='kill container', action='store_true')
-parser.add_argument('--logs', help='display container logs', action='store_true')
-parser.add_argument('--run', help='run a one-off command', nargs='+')
-parser.add_argument('--start', help='start container', action='store_true')
-parser.add_argument('--status', help='show container status', action='store_true')
-parser.add_argument('--stop', help='stop container', action='store_true')
-args = parser.parse_args()
+cli = '''Rocked.
 
-if os.path.exists(args.file):
-    yml_file = args.file
+Usage:
+    rocked build <file.yml>
+    rocked kill <file.yml>
+    rocked logs <file.yml>
+    rocked run <file.yml> <command>...
+    rocked start <file.yml>
+    rocked status <file.yml>
+    rocked stop <file.yml>
+    rocked -h | --help
+
+Options:
+    -h --help   Show this screen.
+'''
+
+args = docopt.docopt(cli)
+
+if os.path.exists(args['<file.yml>']):
+    yml_file = args['<file.yml>']
 else:
-    yml_file = os.path.join(os.getcwd(), args.file)
+    yml_file = os.path.join(os.getcwd(), args['<file.yml>'])
 
 manifest = yaml.load(os.path.expandvars(open(yml_file).read()))
 
-if args.build:
+if args['build']:
     subprocess.call(['docker', 'build', '-t', manifest['image'], manifest['build']])
     exit(0)
 
 ps_command = ['docker', 'ps']
 show_status = False
-if args.status or not any([args.build, args.kill, args.logs, args.run, args.start, args.stop]):
+if args['status'] or not any([args['build'], args['kill'], args['logs'], args['run'], args['start'], args['stop']]):
     show_status = True
 else:
     ps_command.extend(['-a'])
@@ -53,16 +60,16 @@ if show_status:
         print manifest['name'] + ': not running'
 
 if container:
-    if args.kill:
+    if args['kill']:
         subprocess.call(['docker', 'kill', container])
-    if args.logs:
+    if args['logs']:
         subprocess.call(['docker', 'logs', container])
-    if args.stop:
+    if args['stop']:
         subprocess.call(['docker', 'stop', container])
 
-if args.start or args.run:
+if args['start'] or args['run']:
     run_command = ['docker', 'run']
-    if not args.run:
+    if not args['run']:
         if container:
             subprocess.call(['docker', 'rm', container])
         run_command.extend(['-d'])
@@ -75,15 +82,15 @@ if args.start or args.run:
     if 'links' in manifest:
         for l in manifest['links']:
             run_command.extend(['--link', l])
-    if 'ports' in manifest and not args.run:
+    if 'ports' in manifest and not args['run']:
         for p in manifest['ports']:
             run_command.extend(['-p', p])
     if 'volumes' in manifest:
         for v in manifest['volumes']:
             run_command.extend(['-v', v])
     run_command.extend([manifest['image']])
-    if args.run:
-        run_command.extend(args.run)
+    if args['run']:
+        run_command.extend(args['<command>'])
     elif 'command' in manifest:
         run_command.extend(manifest['command'].split())
     subprocess.call(run_command)

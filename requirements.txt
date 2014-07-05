@@ -1,2 +1,2 @@
-argparse==1.2.1
+docopt==0.6.2
 PyYAML==3.11

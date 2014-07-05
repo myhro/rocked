@@ -4,21 +4,20 @@ Rocked
 A thin wrapper to manage [Docker][docker] containers.
 
 ```
-usage: rocked.py [-h] [--build] [--kill] [--logs] [--run RUN [RUN ...]]
-                 [--start] [--stop]
-                 file
+Rocked.
 
-positional arguments:
-  file                 YAML manifest file to be loaded
+Usage:
+    rocked build <file.yml>
+    rocked kill <file.yml>
+    rocked logs <file.yml>
+    rocked run <file.yml> <command>...
+    rocked start <file.yml>
+    rocked status <file.yml>
+    rocked stop <file.yml>
+    rocked -h | --help
 
-optional arguments:
-  -h, --help           show this help message and exit
-  --build              build image
-  --kill               kill container
-  --logs               display container logs
-  --run RUN [RUN ...]  run a one-off command
-  --start              start container
-  --stop               stop container
+Options:
+    -h --help   Show this screen.
 ```
 
 [docker]: http://www.docker.com/
