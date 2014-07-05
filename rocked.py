@@ -7,7 +7,7 @@ import docopt
 import yaml
 
 
-cli = '''Rocked.
+cli = '''Rocked, a thin wrapper to manage Docker containers.
 
 Usage:
     rocked build <file.yml>
