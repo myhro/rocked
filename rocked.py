@@ -13,7 +13,7 @@ Usage:
     rocked build <file.yml>
     rocked kill <file.yml>
     rocked logs <file.yml>
-    rocked run <file.yml> <command>...
+    rocked run <file.yml> [--] [<command>...]
     rocked start <file.yml>
     rocked status <file.yml>
     rocked stop <file.yml>
@@ -89,7 +89,7 @@ if args['start'] or args['run']:
         for v in manifest['volumes']:
             run_command.extend(['-v', v])
     run_command.extend([manifest['image']])
-    if args['run']:
+    if args['<command>']:
         run_command.extend(args['<command>'])
     elif 'command' in manifest:
         run_command.extend(manifest['command'].split())
