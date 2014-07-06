@@ -64,7 +64,7 @@ volumes:
 
 Start the container daemon:
 
-    [myhro@wheezy:~]$ rocked start db.yml
+`[myhro@wheezy:~]$ rocked start db.yml`
 
 ### Web application container
 
@@ -108,6 +108,18 @@ volumes:
     [myhro@wheezy:~]$ rocked start web.yml
 
 **Note**: environment variables, like `${GUNICORN_PORT}` and `${PROJECT_ROOT}` will be parsed when reading the manifest.
+
+### A note about the rocked run command
+
+With the `rocked run` command, it's possible to run arbitrary commands in a temporary container, using the image specified on the manifest, like:
+
+`[myhro@wheezy:~]$ rocked run web.yml python manage.py migrate`
+
+But if the command contains dashes, it needs to be escaped with `--`, e.g.:
+
+`[myhro@wheezy:~]$ rocked run web.yml -- wc -l /etc/passwd`
+
+Otherwise it would be interpreted as an argument of Rocked itself.
 
 ## License
 
