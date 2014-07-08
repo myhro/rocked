@@ -26,6 +26,7 @@ Then you can just use the `rocked` command:
         rocked kill <file.yml>
         rocked logs <file.yml>
         rocked run <file.yml> [--] [<command>...]
+        rocked restart <file.yml>
         rocked start <file.yml>
         rocked status <file.yml>
         rocked stop <file.yml>

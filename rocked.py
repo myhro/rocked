@@ -32,6 +32,8 @@ class Rocked:
             self.logs()
         elif self.args['run'] or self.args['start']:
             self.run()
+        elif self.args['restart']:
+            self.restart()
         elif self.args['status']:
             self.status()
         elif self.args['stop']:
@@ -60,6 +62,10 @@ class Rocked:
     def logs(self):
         if self.container:
             subprocess.call(['docker', 'logs', self.container])
+
+    def restart(self):
+        self.stop()
+        self.run()
 
     def stop(self):
         if self.container:
@@ -109,6 +115,7 @@ def main():
         rocked kill <file.yml>
         rocked logs <file.yml>
         rocked run <file.yml> [--] [<command>...]
+        rocked restart <file.yml>
         rocked start <file.yml>
         rocked status <file.yml>
         rocked stop <file.yml>
