@@ -40,7 +40,7 @@ class Rocked:
             self.stop()
 
     def build(self):
-        subprocess.call(['docker', 'build', '-t', self.manifest['image'], manifest['build']])
+        subprocess.call(['docker', 'build', '-t', self.manifest['image'], self.manifest['build']])
 
     def get_container(self):
         ps_command = ['docker', 'ps']
