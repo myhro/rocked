@@ -1,7 +1,7 @@
 Rocked
 ======
 
-A thin wrapper to manage [Docker][docker] containers. It just generates command line arguments to be passed to the `docker` client, based on the chosen command and loading the container configuration data from a manifest file, written in [YAML][yaml] format.
+A thin wrapper to manage [Docker][docker] containers. It just generates command line arguments to be passed to the `docker` client, based on the chosen command and loading the container configuration data from a manifest file, written in [YAML][yaml] format. So, instead of typing `docker run --rm -t -i -e DATABASE_NAME=django_app -e DJANGO_SECRET_KEY --link db_postgres:db -v /home/myhro/projects/django-example:/app python-baseimage python manage.py shell` every time you want to access the [Django Shell][django-shell], you would just type `rocked run web.yml python manage.py shell`, which produces the same result.
 
 ## Dependencies
 
@@ -127,6 +127,7 @@ Otherwise it would be interpreted as an argument of Rocked itself.
 [MIT License][license]
 
 
+[django-shell]: https://docs.djangoproject.com/en/dev/ref/django-admin/#shell
 [django]: https://www.djangoproject.com/
 [docker]: http://www.docker.com/
 [docopt]: https://pypi.python.org/pypi/docopt
