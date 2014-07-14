@@ -17,7 +17,7 @@ class Rocked:
             yml_file = self.args['<file.yml>']
         else:
             yml_file = os.path.join(os.getcwd(), self.args['<file.yml>'])
-        self.manifest = yaml.load(os.path.expandvars(open(yml_file).read()))
+        self.manifest = yaml.safe_load(os.path.expandvars(open(yml_file).read()))
 
         if self.args['status']:
             self.show_status = True
