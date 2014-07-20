@@ -40,7 +40,11 @@ class Rocked:
             self.stop()
 
     def build(self):
-        subprocess.call(['docker', 'build', '-t', self.manifest['image'], self.manifest['build']])
+        build_command = ['docker', 'build', '-t', self.manifest['image']]
+        if self.args['--no-cache']:
+            build_command.extend(['--no-cache'])
+        build_command.extend([self.manifest['build']])
+        subprocess.call(build_command)
 
     def get_container(self):
         ps_command = ['docker', 'ps']
@@ -111,7 +115,7 @@ def main():
     Rocked, a thin wrapper to manage Docker containers.
 
     Usage:
-        rocked build <file.yml>
+        rocked build [--no-cache] <file.yml>
         rocked kill <file.yml>
         rocked logs <file.yml>
         rocked run <file.yml> [--] [<command>...]

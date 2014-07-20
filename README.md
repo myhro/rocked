@@ -22,7 +22,7 @@ Then you can just use the `rocked` command:
     Rocked, a thin wrapper to manage Docker containers.
 
     Usage:
-        rocked build <file.yml>
+        rocked build [--no-cache] <file.yml>
         rocked kill <file.yml>
         rocked logs <file.yml>
         rocked run <file.yml> [--] [<command>...]
