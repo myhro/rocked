@@ -24,7 +24,7 @@ Then you can just use the `rocked` command:
     Usage:
         rocked build [--no-cache] <file.yml>
         rocked kill <file.yml>
-        rocked logs <file.yml>
+        rocked logs [-f] <file.yml>
         rocked run <file.yml> [--] [<command>...]
         rocked restart <file.yml>
         rocked start <file.yml>

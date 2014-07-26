@@ -64,8 +64,15 @@ class Rocked:
             subprocess.call(['docker', 'kill', self.container])
 
     def logs(self):
+        logs_command = ['docker', 'logs']
+        if self.args['-f']:
+            logs_command.extend(['-f'])
+        logs_command.extend([self.container])
         if self.container:
-            subprocess.call(['docker', 'logs', self.container])
+            try:
+                subprocess.call(logs_command)
+            except KeyboardInterrupt:
+                pass
 
     def restart(self):
         self.stop()
@@ -117,7 +124,7 @@ def main():
     Usage:
         rocked build [--no-cache] <file.yml>
         rocked kill <file.yml>
-        rocked logs <file.yml>
+        rocked logs [-f] <file.yml>
         rocked run <file.yml> [--] [<command>...]
         rocked restart <file.yml>
         rocked start <file.yml>
