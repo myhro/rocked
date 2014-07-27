@@ -135,7 +135,7 @@ def main():
     Options:
         -h --help   Show this screen.
     '''
-    rocked = Rocked(cli)
+    Rocked(cli)
 
 if __name__ == '__main__':
     main()
