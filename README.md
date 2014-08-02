@@ -48,6 +48,7 @@ The manifest file is written in YAML format. This is the list of supported and r
 | links       | list   | List of other containers to be linked                 | no       |
 | name        | string | Name of the container                                 | yes      |
 | ports       | list   | List of ports to be published                         | no       |
+| user        | string | User which will be run the default command            | no       |
 | volumes     | list   | List of volumes to be mounted                         | no       |
 
 ## Examples

@@ -97,6 +97,8 @@ class Rocked:
                 subprocess.call(['docker', 'rm', self.container])
             run_command.extend(['-d'])
             run_command.extend(['--name', self.manifest['name']])
+            if 'user' in self.manifest:
+                run_command.extend(['-u', self.manifest['user']])
         if 'environment' in self.manifest:
             for e in self.manifest['environment']:
                 run_command.extend(['-e', e])
