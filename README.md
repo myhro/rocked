@@ -25,7 +25,7 @@ Then you can just use the `rocked` command:
         rocked build [--no-cache] <file.yml>
         rocked kill <file.yml>
         rocked logs [-f] <file.yml>
-        rocked run <file.yml> [--] [<command>...]
+        rocked run [--root] <file.yml> [--] [<command>...]
         rocked restart <file.yml>
         rocked start <file.yml>
         rocked status <file.yml>
@@ -48,7 +48,7 @@ The manifest file is written in YAML format. This is the list of supported and r
 | links       | list   | List of other containers to be linked                 | no       |
 | name        | string | Name of the container                                 | yes      |
 | ports       | list   | List of ports to be published                         | no       |
-| user        | string | User which will be run the default command            | no       |
+| user        | string | User which will run commands instead of `root`        | no       |
 | volumes     | list   | List of volumes to be mounted                         | no       |
 
 ## Examples

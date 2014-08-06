@@ -97,8 +97,8 @@ class Rocked:
                 subprocess.call(['docker', 'rm', self.container])
             run_command.extend(['-d'])
             run_command.extend(['--name', self.manifest['name']])
-            if 'user' in self.manifest:
-                run_command.extend(['-u', self.manifest['user']])
+        if 'user' in self.manifest and not self.args['--root']:
+            run_command.extend(['-u', self.manifest['user']])
         if 'environment' in self.manifest:
             for e in self.manifest['environment']:
                 run_command.extend(['-e', e])
@@ -127,7 +127,7 @@ def main():
         rocked build [--no-cache] <file.yml>
         rocked kill <file.yml>
         rocked logs [-f] <file.yml>
-        rocked run <file.yml> [--] [<command>...]
+        rocked run [--root] <file.yml> [--] [<command>...]
         rocked restart <file.yml>
         rocked start <file.yml>
         rocked status <file.yml>
