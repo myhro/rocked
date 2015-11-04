@@ -54,7 +54,7 @@ class Rocked:
         if len(container_list) > 1:
             for line in [c.split() for c in container_list[1:]]:
                 container_id = line[0]
-                inspect = json.loads(subprocess.check_output(['docker', 'inspect', container_id])[1:-1])
+                inspect = json.loads(subprocess.check_output(['docker', 'inspect', container_id])).pop()
                 if inspect['Name'] == u'/{name}'.format(name=self.manifest['name']):
                     self.container = container_id
                     break
